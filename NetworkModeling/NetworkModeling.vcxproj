@@ -101,6 +101,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Huffman.h" />
     <ClInclude Include="NetworkModeling.h" />
     <ClInclude Include="NetworkModelingDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="NetworkModeling.cpp" />
     <ClCompile Include="NetworkModelingDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -127,4 +129,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="NetworkModeling.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

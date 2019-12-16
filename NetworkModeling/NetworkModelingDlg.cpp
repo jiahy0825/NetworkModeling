@@ -7,6 +7,8 @@
 #include "NetworkModelingDlg.h"
 #include "afxdialogex.h"
 
+#include "Huffman.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -49,6 +51,9 @@ END_MESSAGE_MAP()
 
 CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CNetworkModelingDlg::IDD, pParent)
+	, str_input(_T(""))
+	, str_encode(_T(""))
+	, str_decode(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -56,12 +61,17 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_CODE, str_input);
+	DDX_Text(pDX, IDC_EDIT_BINARY, str_encode);
+	DDX_Text(pDX, IDC_EDIT_ENCODE, str_decode);
 }
 
 BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_ENCODE, &CNetworkModelingDlg::OnBnClickedButtonEncode)
+	ON_BN_CLICKED(IDC_BUTTON_DECODE, &CNetworkModelingDlg::OnBnClickedButtonDecode)
 END_MESSAGE_MAP()
 
 
@@ -150,3 +160,29 @@ HCURSOR CNetworkModelingDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CNetworkModelingDlg::OnBnClickedButtonEncode()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_input.GetBuffer());
+	str_encode = huffman.encode(str).c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+void CNetworkModelingDlg::OnBnClickedButtonDecode()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_encode.GetBuffer());
+
+	str_decode = huffman.decode(str).c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+
+}

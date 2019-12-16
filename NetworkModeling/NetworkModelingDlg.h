@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Huffman.h"
 
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
@@ -29,4 +30,13 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	CString str_input;
+	CString str_encode;
+	CString str_decode;
+
+	Huffman huffman;
+	afx_msg void OnBnClickedButtonEncode();
+	afx_msg void OnBnClickedButtonDecode();
+	
 };
