@@ -9,6 +9,7 @@
 
 #include "Huffman.h"
 #include "ASCIICode.h"
+#include "Hamming.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,6 +76,8 @@ BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_DECODE, &CNetworkModelingDlg::OnBnClickedButtonDecode)
 	ON_BN_CLICKED(IDC_BUTTON_ASCII_ENCODE, &CNetworkModelingDlg::OnBnClickedButtonAsciiEncode)
 	ON_BN_CLICKED(IDC_BUTTON_ASCII_DECODE, &CNetworkModelingDlg::OnBnClickedButtonAsciiDecode)
+	ON_BN_CLICKED(IDC_BUTTON_CORRECT, &CNetworkModelingDlg::OnBnClickedButtonCorrect)
+	ON_BN_CLICKED(IDC_BUTTON_DETECT, &CNetworkModelingDlg::OnBnClickedButtonDetect)
 END_MESSAGE_MAP()
 
 
@@ -210,4 +213,33 @@ void CNetworkModelingDlg::OnBnClickedButtonAsciiDecode()
 
 	// 更新对话框的值
 	UpdateData(FALSE);
+}
+
+// 011011011010有误
+void CNetworkModelingDlg::OnBnClickedButtonCorrect()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_input.GetBuffer());
+	str = huffman.encode(str);
+	str = hamming.encode(str);
+	str_encode = str.c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+void CNetworkModelingDlg::OnBnClickedButtonDetect()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_encode.GetBuffer());
+	str = hamming.decode(str);
+	str = huffman.decode(str);
+	str_decode = str.c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+
 }

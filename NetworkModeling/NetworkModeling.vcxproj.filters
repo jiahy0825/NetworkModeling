@@ -39,6 +39,9 @@
     <ClInclude Include="ASCIICode.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Hamming.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkModeling.cpp">
@@ -54,6 +57,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ASCIICode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hamming.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

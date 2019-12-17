@@ -6,6 +6,7 @@
 
 #include "Huffman.h"
 #include "ASCIICode.h"
+#include "Hamming.h"
 
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
@@ -38,10 +39,13 @@ public:
 
 	Huffman huffman;
 	ASCIICode asciiCode;
+	Hamming hamming;
 
 	afx_msg void OnBnClickedButtonEncode();
 	afx_msg void OnBnClickedButtonDecode();
 	
 	afx_msg void OnBnClickedButtonAsciiEncode();
 	afx_msg void OnBnClickedButtonAsciiDecode();
+	afx_msg void OnBnClickedButtonCorrect();
+	afx_msg void OnBnClickedButtonDetect();
 };
