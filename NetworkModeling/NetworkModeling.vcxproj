@@ -101,6 +101,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ASCIICode.h" />
     <ClInclude Include="Huffman.h" />
     <ClInclude Include="NetworkModeling.h" />
     <ClInclude Include="NetworkModelingDlg.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ASCIICode.cpp" />
     <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="NetworkModeling.cpp" />
     <ClCompile Include="NetworkModelingDlg.cpp" />

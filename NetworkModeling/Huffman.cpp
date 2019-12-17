@@ -9,10 +9,6 @@
 
 using namespace std;
 
-Huffman::Huffman(){
-	root = NULL;
-}
-
 void Huffman::initTree(string& str){
 	map<char, int> m;
 	priority_queue<node> q;
@@ -60,6 +56,21 @@ string Huffman::encode(string& str){
 	initTree(str);
 	code.clear();
 	dfs("", root);
+
+	// 计算平均码长
+	map<char, int> m;
+	for(char c : str){
+		if (m.find(c) == m.end()){
+			m[c] = 1;
+		}else{
+			m[c] += 1;
+		}
+	}
+	averageCodeLength = 0;
+	for (map<char, int>::iterator iter = m.begin();iter != m.end();iter++){
+		averageCodeLength += (iter->second) * 1.0 / str.length() * code[iter->first].length();
+	}
+
 	string res = "";
 	for(char c : str){
 		res += code[c];

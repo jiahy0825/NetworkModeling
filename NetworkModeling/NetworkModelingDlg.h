@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Huffman.h"
+#include "ASCIICode.h"
 
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
@@ -36,7 +37,11 @@ public:
 	CString str_decode;
 
 	Huffman huffman;
+	ASCIICode asciiCode;
+
 	afx_msg void OnBnClickedButtonEncode();
 	afx_msg void OnBnClickedButtonDecode();
 	
+	afx_msg void OnBnClickedButtonAsciiEncode();
+	afx_msg void OnBnClickedButtonAsciiDecode();
 };

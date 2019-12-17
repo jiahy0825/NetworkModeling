@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 
 #include "Huffman.h"
+#include "ASCIICode.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +73,8 @@ BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_ENCODE, &CNetworkModelingDlg::OnBnClickedButtonEncode)
 	ON_BN_CLICKED(IDC_BUTTON_DECODE, &CNetworkModelingDlg::OnBnClickedButtonDecode)
+	ON_BN_CLICKED(IDC_BUTTON_ASCII_ENCODE, &CNetworkModelingDlg::OnBnClickedButtonAsciiEncode)
+	ON_BN_CLICKED(IDC_BUTTON_ASCII_DECODE, &CNetworkModelingDlg::OnBnClickedButtonAsciiDecode)
 END_MESSAGE_MAP()
 
 
@@ -179,10 +182,32 @@ void CNetworkModelingDlg::OnBnClickedButtonDecode()
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
 	string str = CT2A(str_encode.GetBuffer());
-
 	str_decode = huffman.decode(str).c_str();
 
 	// 更新对话框的值
 	UpdateData(FALSE);
+}
 
+
+void CNetworkModelingDlg::OnBnClickedButtonAsciiEncode()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_input.GetBuffer());
+	str_encode = asciiCode.encode(str).c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+void CNetworkModelingDlg::OnBnClickedButtonAsciiDecode()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_encode.GetBuffer());
+	str_decode = asciiCode.decode(str).c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
 }

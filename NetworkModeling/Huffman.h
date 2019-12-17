@@ -39,9 +39,12 @@ class Huffman{
 public:
 	node* root;
 	map<char, string> code;
+	double averageCodeLength;
 
-	Huffman();
-	//~Huffman(void);
+	Huffman(){
+		root = NULL;
+	};
+	~Huffman(void){};
 
 	void initTree(string& str);
 	void dfs(string str, node* tmp);
