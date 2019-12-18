@@ -76,10 +76,12 @@ void CModulateDlg::drawPicture(std::vector<double>& vec){
 	}
 
 	CChartLineSerie *pLineSerie2;
+	//CChartPointsSerie *pLineSerie2;
 	// 开始绘画折线图
 	m_ChartCtrl_Modulate.SetZoomEnabled(true);
 	m_ChartCtrl_Modulate.RemoveAllSeries();//先清空
 	pLineSerie2 = m_ChartCtrl_Modulate.CreateLineSerie();
+	//pLineSerie2 = m_ChartCtrl_Modulate.CreatePointsSerie();
 	pLineSerie2->SetSeriesOrdering(poNoOrdering);//设置为无序
 	pLineSerie2->SetPoints(X1Values, Y1Values, vec.size());
 

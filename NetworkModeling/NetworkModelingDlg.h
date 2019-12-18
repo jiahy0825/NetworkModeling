@@ -10,6 +10,7 @@
 #include "OOK.h"
 
 #include "ModulateDlg.h"
+#include "DemodulateDlg.h"
 
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
@@ -47,6 +48,7 @@ public:
 	OOK ook;
 
 	CModulateDlg* m_ModulateDlg;
+	CDemodulateDlg* m_DemodulateDlg;
 
 	afx_msg void OnBnClickedButtonEncode();
 	afx_msg void OnBnClickedButtonDecode();

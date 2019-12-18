@@ -62,6 +62,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_ModulateDlg = NULL;
+	m_DemodulateDlg = NULL;
 }
 
 void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
@@ -265,16 +266,15 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 	str_module = str.c_str();
 
 	//显示 m_ModulateDlg 对话框
-	if (NULL == m_ModulateDlg)   
-    {   
+	if (NULL == m_ModulateDlg){   
         // 创建非模态对话框
         m_ModulateDlg = new CModulateDlg();   
         m_ModulateDlg->Create(IDD_DIALOG_MODULATE, this);
-    }   
-    // 显示非模态对话框
-    m_ModulateDlg->ShowWindow(SW_SHOW);   
+	}   
+	// 显示非模态对话框
+	m_ModulateDlg->ShowWindow(SW_SHOW);   
 	m_ModulateDlg->drawPicture(modulePoints);
-    
+
 	// 更新对话框的值
 	UpdateData(FALSE);
 }
@@ -303,6 +303,16 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	str = hamming.decode(str);
 	str = huffman.decode(str);
 	str_decode = str.c_str();
+
+	//显示 m_ModulateDlg 对话框
+	if (NULL == m_DemodulateDlg){   
+        // 创建非模态对话框
+        m_DemodulateDlg = new CDemodulateDlg();   
+        m_DemodulateDlg->Create(IDD_DIALOG_DEMODULATE, this);
+	}   
+	// 显示非模态对话框
+	m_DemodulateDlg->ShowWindow(SW_SHOW);
+	m_DemodulateDlg->drawPicture(modulePoints);
 
 	// 更新对话框的值
 	UpdateData(FALSE);

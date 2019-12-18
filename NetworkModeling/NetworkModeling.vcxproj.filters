@@ -141,6 +141,9 @@
     <ClInclude Include="ChartCtrl\ChartXYSerie.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DemodulateDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkModeling.cpp">
@@ -234,6 +237,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ChartCtrl\ChartXYSerie.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DemodulateDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

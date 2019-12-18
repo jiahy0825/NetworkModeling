@@ -133,6 +133,7 @@
     <ClInclude Include="ChartCtrl\ChartTitle.h" />
     <ClInclude Include="ChartCtrl\ChartXYSerie.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="DemodulateDlg.h" />
     <ClInclude Include="Hamming.h" />
     <ClInclude Include="Huffman.h" />
     <ClInclude Include="ModulateDlg.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="ChartCtrl\ChartSurfaceSerie.cpp" />
     <ClCompile Include="ChartCtrl\ChartTitle.cpp" />
     <ClCompile Include="ChartCtrl\ChartXYSerie.cpp" />
+    <ClCompile Include="DemodulateDlg.cpp" />
     <ClCompile Include="Hamming.cpp" />
     <ClCompile Include="Huffman.cpp" />
     <ClCompile Include="ModulateDlg.cpp" />
