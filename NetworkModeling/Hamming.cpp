@@ -30,7 +30,7 @@ int Hamming::help(string& str, int start, int k){
 		for(int i = 0;i < k && i + start < n;i++){
 			res = res ^ (str[i + start] - '0');
 		}
-		start += k;
+		start += 2 * k;
 	}
 	return res;
 }
@@ -45,7 +45,7 @@ string Hamming::encode(string& str){
 	int idx = 0;
 	for (int i = 1;i <= n;i++){
 		if (i == k){
-			res[i] == '0';
+			res[i] = '0';
 			k *= 2;
 		}else{
 			res[i] = str[idx++];

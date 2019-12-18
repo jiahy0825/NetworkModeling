@@ -10,6 +10,9 @@
 #include "Huffman.h"
 #include "ASCIICode.h"
 #include "Hamming.h"
+#include "OOK.h"
+
+#include <vector>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,6 +59,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_input(_T(""))
 	, str_encode(_T(""))
 	, str_decode(_T(""))
+	, str_module(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -66,6 +70,7 @@ void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_CODE, str_input);
 	DDX_Text(pDX, IDC_EDIT_BINARY, str_encode);
 	DDX_Text(pDX, IDC_EDIT_ENCODE, str_decode);
+	DDX_Text(pDX, IDC_EDIT_MODULE, str_module);
 }
 
 BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
@@ -78,6 +83,8 @@ BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ASCII_DECODE, &CNetworkModelingDlg::OnBnClickedButtonAsciiDecode)
 	ON_BN_CLICKED(IDC_BUTTON_CORRECT, &CNetworkModelingDlg::OnBnClickedButtonCorrect)
 	ON_BN_CLICKED(IDC_BUTTON_DETECT, &CNetworkModelingDlg::OnBnClickedButtonDetect)
+	ON_BN_CLICKED(IDC_BUTTON_MODULE, &CNetworkModelingDlg::OnBnClickedButtonModule)
+	ON_BN_CLICKED(IDC_BUTTON_DEMODULE, &CNetworkModelingDlg::OnBnClickedButtonDemodule)
 END_MESSAGE_MAP()
 
 
@@ -237,6 +244,44 @@ void CNetworkModelingDlg::OnBnClickedButtonDetect()
 	string str = CT2A(str_encode.GetBuffer());
 	str = hamming.decode(str);
 	str = huffman.decode(str);
+	str_decode = str.c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+
+void CNetworkModelingDlg::OnBnClickedButtonModule()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_input.GetBuffer());
+	str = huffman.encode(str);
+	str = hamming.encode(str);
+	str_encode = str.c_str();
+
+	vector<double> vec = ook.modulate(str, 16);
+
+
+
+	str = ook.encode(vec);
+	str_module = str.c_str();
+
+	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+void CNetworkModelingDlg::OnBnClickedButtonDemodule()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	string str = CT2A(str_module.GetBuffer());
+	str = ook.demodulate(ook.decode(str), 16);
+
+	//str = hamming.decode(str);
+	//str = huffman.decode(str);
 	str_decode = str.c_str();
 
 	// 更新对话框的值
