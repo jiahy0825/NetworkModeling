@@ -19,6 +19,8 @@
 #endif
 
 
+extern vector<double> modulePoints;
+
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -261,11 +263,8 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 	str = hamming.encode(str);
 	str_encode = str.c_str();
 
-	vector<double> vec = ook.modulate(str, 16);
-
-
-
-	str = ook.encode(vec);
+	modulePoints = ook.modulate(str, 16);
+	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
 	// 更新对话框的值
@@ -280,11 +279,10 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	string str = CT2A(str_module.GetBuffer());
 	str = ook.demodulate(ook.decode(str), 16);
 
-	//str = hamming.decode(str);
-	//str = huffman.decode(str);
+	str = hamming.decode(str);
+	str = huffman.decode(str);
 	str_decode = str.c_str();
 
 	// 更新对话框的值
 	UpdateData(FALSE);
-
 }

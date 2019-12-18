@@ -51,7 +51,7 @@ string Hamming::encode(string& str){
 			res[i] = str[idx++];
 		}
 	}
-	assert(idx == m && k == (int)pow(2, r));
+	//assert(idx == m && k == (int)pow(2, r));
 	k = 1;
 	for (int i = 0;i < r;i++){
 		res[k] = (char)('0' + help(res, k, k));
@@ -76,7 +76,7 @@ string Hamming::decode(string& str){
 	for(int i = 0;i < hamm.length();i++){
 		idx = idx * 2 + hamm[i] - '0';
 	}
-	assert(idx <= n);
+	//assert(idx <= n);
 	// 对idx位取反
 	str[idx] = (char)('0' + !(str[idx] - '0'));
 	string res = "";

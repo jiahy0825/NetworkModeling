@@ -7,10 +7,12 @@
 #include <vector>
 #include <math.h>
 
-#define PI acos(-1)
 // # define PI 3.14159265358979323846 
 
 using namespace std;
+
+#define PI acos(-1)
+vector<double> modulePoints;
 
 // C++库中没有split函数，需要自己实现
 vector<string> split(const string& str, const std::string& delim){
@@ -83,6 +85,9 @@ string OOK::demodulate(vector<double>& vec, int period){
 		roll.push_back(sum / period);
 	}
 
+	// 此处更新modulePoints，为画图做准备
+	modulePoints = roll;
+
 	idx = period / 2;
 	while (idx < roll.size()){
 		if (roll[idx] > 0.25){
@@ -90,8 +95,7 @@ string OOK::demodulate(vector<double>& vec, int period){
 		}else{
 			res += "0";
 		}
-		res += "**" + to_string(roll[idx]) + "**\r\n";
-		//res += to_string(roll[idx]);
+		//res += "**" + to_string(roll[idx]) + "**\r\n";
 		idx += period;
 	}
 	return res;
