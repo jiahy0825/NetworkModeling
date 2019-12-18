@@ -12,7 +12,6 @@
 using namespace std;
 
 #define PI acos(-1)
-vector<double> modulePoints;
 
 // C++库中没有split函数，需要自己实现
 vector<string> split(const string& str, const std::string& delim){
@@ -64,7 +63,7 @@ vector<double> OOK::modulate(string& str, int period){
 	return res;
 }
 
-string OOK::demodulate(vector<double>& vec, int period){
+vector<double> OOK::demodulate(vector<double>& vec, int period){
 	string res = "";
 	int idx = 0;
 	// vec * sin
@@ -86,17 +85,5 @@ string OOK::demodulate(vector<double>& vec, int period){
 	}
 
 	// 此处更新modulePoints，为画图做准备
-	modulePoints = roll;
-
-	idx = period / 2;
-	while (idx < roll.size()){
-		if (roll[idx] > 0.25){
-			res += "1";
-		}else{
-			res += "0";
-		}
-		//res += "**" + to_string(roll[idx]) + "**\r\n";
-		idx += period;
-	}
-	return res;
+	return roll;
 }

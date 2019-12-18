@@ -9,6 +9,8 @@
 #include "Hamming.h"
 #include "OOK.h"
 
+#include "ModulateDlg.h"
+
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
 {
@@ -44,9 +46,10 @@ public:
 	Hamming hamming;
 	OOK ook;
 
+	CModulateDlg* m_ModulateDlg;
+
 	afx_msg void OnBnClickedButtonEncode();
 	afx_msg void OnBnClickedButtonDecode();
-	
 	afx_msg void OnBnClickedButtonAsciiEncode();
 	afx_msg void OnBnClickedButtonAsciiDecode();
 	afx_msg void OnBnClickedButtonCorrect();

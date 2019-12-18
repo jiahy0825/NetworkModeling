@@ -18,9 +18,6 @@
 #define new DEBUG_NEW
 #endif
 
-
-extern vector<double> modulePoints;
-
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -64,6 +61,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_module(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_ModulateDlg = NULL;
 }
 
 void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
@@ -253,7 +251,6 @@ void CNetworkModelingDlg::OnBnClickedButtonDetect()
 }
 
 
-
 void CNetworkModelingDlg::OnBnClickedButtonModule()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -263,10 +260,21 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 	str = hamming.encode(str);
 	str_encode = str.c_str();
 
-	modulePoints = ook.modulate(str, 16);
+	vector<double> modulePoints = ook.modulate(str, 16);
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
+	//显示 m_ModulateDlg 对话框
+	if (NULL == m_ModulateDlg)   
+    {   
+        // 创建非模态对话框
+        m_ModulateDlg = new CModulateDlg();   
+        m_ModulateDlg->Create(IDD_DIALOG_MODULATE, this);
+    }   
+    // 显示非模态对话框
+    m_ModulateDlg->ShowWindow(SW_SHOW);   
+	m_ModulateDlg->drawPicture(modulePoints);
+    
 	// 更新对话框的值
 	UpdateData(FALSE);
 }
@@ -276,8 +284,21 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
+	int period = 16;
+	int idx = period / 2;
 	string str = CT2A(str_module.GetBuffer());
-	str = ook.demodulate(ook.decode(str), 16);
+	vector<double> modulePoints = ook.demodulate(ook.decode(str), period);
+
+	str = "";
+	while (idx < modulePoints.size()){
+		if (modulePoints[idx] > 0.25){
+			str += "1";
+		}else{
+			str += "0";
+		}
+		//res += "**" + to_string(roll[idx]) + "**\r\n";
+		idx += period;
+	}
 
 	str = hamming.decode(str);
 	str = huffman.decode(str);
