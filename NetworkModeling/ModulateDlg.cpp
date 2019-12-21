@@ -8,12 +8,39 @@
 
 #include "OOK.h"
 
+#include <iostream>
 
-CChartCtrl m_ChartCtrl_Modulate;
 double modulate_x;
 double modulate_y;
 
 // CModulateDlg 对话框
+
+
+void WriteLog(CString strLog, CString strType)
+{
+	CString strPath = CString("C:\\Users\\jiahy\\Desktop\\NetworkModeling\\Log.txt");		//log路径
+	CString strTime = CTime::GetCurrentTime().Format(L"[%Y-%m-%d %H:%M:%S]");
+	USES_CONVERSION;
+	char szStr[MAX_PATH] = { 0 };
+	strcpy_s(szStr, sizeof(szStr), W2A(strPath));
+	char *sPath = szStr;
+ 
+	CString strText;
+	strText = L"[" + strType + L"]" + strTime + L" " + strLog + L"\r\n";
+ 
+	FILE *fp = NULL;
+	fopen_s(&fp, sPath, "at+");		//以文本形式追加
+	if (NULL == fp)
+	{
+		return;
+	}
+ 
+	char Text[MAX_PATH] = { 0 };
+	strcpy_s(Text, sizeof(Text), W2A(strText));
+	fprintf(fp, "%s", Text);
+	fflush(fp);						//除读写缓冲区，需要立即把输出缓冲区的数据进行物理写入时
+	fclose(fp);
+}
 
 IMPLEMENT_DYNAMIC(CModulateDlg, CDialogEx)
 
@@ -48,12 +75,15 @@ public:
 
 // 对话框在此处画折线图
 void CModulateDlg::drawPicture(std::vector<double>& vec){
+	m_ChartCtrl_Modulate.EnableRefresh(false);
 	// 画坐标轴
 	CChartAxis *pAxis = NULL;
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::BottomAxis);
 	pAxis->SetAutomatic(true);
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::LeftAxis);
 	pAxis->SetAutomatic(true);
+
+	WriteLog(CString("success"), CString("Print"));
 
 	// 导入标题
 	TChartString str1;
@@ -94,6 +124,8 @@ void CModulateDlg::drawPicture(std::vector<double>& vec){
 	m_pCursorListener = new CCustomCursorListener;
 	m_pCursorListener->GetHwnd(hWnd);
 	pCrossHair->RegisterListener(m_pCursorListener);
+
+	m_ChartCtrl_Modulate.EnableRefresh(true);
 }
 
 void CModulateDlg::DoDataExchange(CDataExchange* pDX)

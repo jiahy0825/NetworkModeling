@@ -12,6 +12,7 @@
 #include "ModulateDlg.h"
 #include "DemodulateDlg.h"
 
+
 // CNetworkModelingDlg ¶Ô»°¿ò
 class CNetworkModelingDlg : public CDialogEx
 {
@@ -47,8 +48,10 @@ public:
 	Hamming hamming;
 	OOK ook;
 
-	CModulateDlg* m_ModulateDlg;
-	CDemodulateDlg* m_DemodulateDlg;
+	CModulateDlg* m_ModulateDlg[100];
+	int m_ModulateDlg_index;
+	CDemodulateDlg* m_DemodulateDlg[100];
+	int m_DemodulateDlg_index;
 
 	afx_msg void OnBnClickedButtonEncode();
 	afx_msg void OnBnClickedButtonDecode();

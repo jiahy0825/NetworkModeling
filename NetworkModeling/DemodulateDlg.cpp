@@ -7,7 +7,6 @@
 #include "afxdialogex.h"
 
 
-CChartCtrl m_ChartCtrl_Demodulate;
 double demodulate_x;
 double demodulate_y;
 

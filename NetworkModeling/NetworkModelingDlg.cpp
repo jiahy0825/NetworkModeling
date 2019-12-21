@@ -61,8 +61,12 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_module(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	m_ModulateDlg = NULL;
-	m_DemodulateDlg = NULL;
+	for (int i = 0;i < 100;i++){
+		m_ModulateDlg[i] = NULL;
+		m_DemodulateDlg[i] = NULL;
+	}
+	m_ModulateDlg_index = 0;
+	m_DemodulateDlg_index = 0;
 }
 
 void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
@@ -266,14 +270,15 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 	str_module = str.c_str();
 
 	//显示 m_ModulateDlg 对话框
-	if (NULL == m_ModulateDlg){   
+	if (NULL == m_ModulateDlg[m_ModulateDlg_index]){   
         // 创建非模态对话框
-        m_ModulateDlg = new CModulateDlg();   
-        m_ModulateDlg->Create(IDD_DIALOG_MODULATE, this);
+        m_ModulateDlg[m_ModulateDlg_index] = new CModulateDlg();   
+        m_ModulateDlg[m_ModulateDlg_index]->Create(IDD_DIALOG_MODULATE, this);
 	}   
 	// 显示非模态对话框
-	m_ModulateDlg->ShowWindow(SW_SHOW);   
-	m_ModulateDlg->drawPicture(modulePoints);
+	m_ModulateDlg[m_ModulateDlg_index]->ShowWindow(SW_SHOW);   
+	m_ModulateDlg[m_ModulateDlg_index]->drawPicture(modulePoints);
+	m_ModulateDlg_index++;
 
 	// 更新对话框的值
 	UpdateData(FALSE);
@@ -303,16 +308,17 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	str = hamming.decode(str);
 	str = huffman.decode(str);
 	str_decode = str.c_str();
-
+	
 	//显示 m_ModulateDlg 对话框
-	if (NULL == m_DemodulateDlg){   
+	if (NULL == m_DemodulateDlg[m_DemodulateDlg_index]){   
         // 创建非模态对话框
-        m_DemodulateDlg = new CDemodulateDlg();   
-        m_DemodulateDlg->Create(IDD_DIALOG_DEMODULATE, this);
+        m_DemodulateDlg[m_DemodulateDlg_index] = new CDemodulateDlg();   
+        m_DemodulateDlg[m_DemodulateDlg_index]->Create(IDD_DIALOG_DEMODULATE, this);
 	}   
 	// 显示非模态对话框
-	m_DemodulateDlg->ShowWindow(SW_SHOW);
-	m_DemodulateDlg->drawPicture(modulePoints);
+	m_DemodulateDlg[m_DemodulateDlg_index]->ShowWindow(SW_SHOW);
+	m_DemodulateDlg[m_DemodulateDlg_index]->drawPicture(modulePoints);
+	m_DemodulateDlg_index++;
 
 	// 更新对话框的值
 	UpdateData(FALSE);

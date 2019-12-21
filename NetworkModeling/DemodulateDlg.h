@@ -19,6 +19,8 @@ public:
 	CDemodulateDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CDemodulateDlg();
 
+	CChartCtrl m_ChartCtrl_Demodulate;
+
 	// 对话框数据
 	enum { IDD = IDD_DIALOG_DEMODULATE };
 
