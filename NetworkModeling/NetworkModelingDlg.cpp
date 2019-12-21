@@ -260,6 +260,9 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
+
+	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
+
 	string str = CT2A(str_input.GetBuffer());
 	str = huffman.encode(str);
 	str = hamming.encode(str);
@@ -277,7 +280,7 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 	}   
 	// 显示非模态对话框
 	m_ModulateDlg[m_ModulateDlg_index]->ShowWindow(SW_SHOW);   
-	m_ModulateDlg[m_ModulateDlg_index]->drawPicture(modulePoints);
+	m_ModulateDlg[m_ModulateDlg_index]->drawPicture(modulePoints, selected);
 	m_ModulateDlg_index++;
 
 	// 更新对话框的值
@@ -289,6 +292,9 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
+
+	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
+
 	int period = 16;
 	int idx = period / 2;
 	string str = CT2A(str_module.GetBuffer());
@@ -301,7 +307,6 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 		}else{
 			str += "0";
 		}
-		//res += "**" + to_string(roll[idx]) + "**\r\n";
 		idx += period;
 	}
 
@@ -317,7 +322,7 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	}   
 	// 显示非模态对话框
 	m_DemodulateDlg[m_DemodulateDlg_index]->ShowWindow(SW_SHOW);
-	m_DemodulateDlg[m_DemodulateDlg_index]->drawPicture(modulePoints);
+	m_DemodulateDlg[m_DemodulateDlg_index]->drawPicture(modulePoints, selected);
 	m_DemodulateDlg_index++;
 
 	// 更新对话框的值

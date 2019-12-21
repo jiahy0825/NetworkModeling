@@ -47,7 +47,8 @@ IMPLEMENT_DYNAMIC(CModulateDlg, CDialogEx)
 CModulateDlg::CModulateDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CModulateDlg::IDD, pParent)
 {
-
+	pAxis = NULL;
+	m_index = 100;
 }
 
 CModulateDlg::~CModulateDlg()
@@ -74,10 +75,9 @@ public:
 };
 
 // 对话框在此处画折线图
-void CModulateDlg::drawPicture(std::vector<double>& vec){
+void CModulateDlg::drawPicture(std::vector<double>& vec, bool dynamic){
 	m_ChartCtrl_Modulate.EnableRefresh(false);
 	// 画坐标轴
-	CChartAxis *pAxis = NULL;
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::BottomAxis);
 	pAxis->SetAutomatic(true);
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::LeftAxis);
@@ -97,23 +97,31 @@ void CModulateDlg::drawPicture(std::vector<double>& vec){
 	m_ChartCtrl_Modulate.SetBorderColor(RGB(255, 255, 255));  //边框颜色白色
 	m_ChartCtrl_Modulate.SetBackColor(RGB(85, 85, 85));  //背景颜色深灰色
 
-	double* X1Values = (double*)malloc(sizeof(double) * vec.size());
-	double* Y1Values = (double*)malloc(sizeof(double) * vec.size());
-	for (int i = 0; i < vec.size(); i++)
+	int size = 0;
+	if (dynamic){
+		m_vec = vec;
+		m_index = 100;
+		size = min(100, vec.size());
+	}else{
+		size = vec.size();
+	}
+
+	double* X1Values = (double*)malloc(sizeof(double) * size);
+	double* Y1Values = (double*)malloc(sizeof(double) * size);
+	for (int i = 0; i < size; i++)
 	{
 		X1Values[i] = i + 1;
 		Y1Values[i] = vec[i];
 	}
 
-	CChartLineSerie *pLineSerie2;
-	//CChartPointsSerie *pLineSerie2;
 	// 开始绘画折线图
 	m_ChartCtrl_Modulate.SetZoomEnabled(true);
 	m_ChartCtrl_Modulate.RemoveAllSeries();//先清空
-	pLineSerie2 = m_ChartCtrl_Modulate.CreateLineSerie();
+	pLineSerie = m_ChartCtrl_Modulate.CreateLineSerie();
 	//pLineSerie2 = m_ChartCtrl_Modulate.CreatePointsSerie();
-	pLineSerie2->SetSeriesOrdering(poNoOrdering);//设置为无序
-	pLineSerie2->SetPoints(X1Values, Y1Values, vec.size());
+	pLineSerie->SetSeriesOrdering(poNoOrdering);//设置为无序
+	//pLineSerie2->SetPoints(X1Values, Y1Values, vec.size());
+	pLineSerie->AddPoints(X1Values, Y1Values, size);
 
 	// 设置鼠标监听事件
 	CCustomCursorListener* m_pCursorListener;
@@ -126,6 +134,10 @@ void CModulateDlg::drawPicture(std::vector<double>& vec){
 	pCrossHair->RegisterListener(m_pCursorListener);
 
 	m_ChartCtrl_Modulate.EnableRefresh(true);
+
+	if (dynamic){
+		SetTimer(1, 0, NULL);
+	}
 }
 
 void CModulateDlg::DoDataExchange(CDataExchange* pDX)
@@ -137,6 +149,7 @@ void CModulateDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CModulateDlg, CDialogEx)
 	ON_MESSAGE(MESSAGE_UPDATEPOS, &CModulateDlg::OnMessageUpdatepos)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -153,3 +166,16 @@ afx_msg LRESULT CModulateDlg::OnMessageUpdatepos(WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+
+
+void CModulateDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	pLineSerie->AddPoint(m_index, m_vec[m_index]);
+	m_index++;
+	if (m_index >= m_vec.size()){
+		KillTimer(1);
+	}
+
+	CDialogEx::OnTimer(nIDEvent);
+}
