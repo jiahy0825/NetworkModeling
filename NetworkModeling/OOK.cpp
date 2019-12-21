@@ -74,12 +74,14 @@ vector<double> OOK::demodulate(vector<double>& vec, int period){
 		idx += period;
 	}
 	// 滑动平均
+	// 计算r[n]的滑动平均需要将周期除以2
 	vector<double> roll;
+	period /= 2;
 	double sum = 0;
 	for (int i = 0;i < vec.size();i++){
 		sum += vec[i];
-		if (i >= 16){
-			sum -= vec[i - 16];
+		if (i >= period){
+			sum -= vec[i - period];
 		}
 		roll.push_back(sum / period);
 	}
