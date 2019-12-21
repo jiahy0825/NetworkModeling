@@ -82,15 +82,28 @@ string Huffman::decode(string& str){
 	string res = "";
 	node* tmp = root;
 	for (char c : str){
-		if (c == '0'){
-			tmp = tmp->left;
-		}else{
-			tmp = tmp->right;
-		}
-		if(tmp->isLeaf){
-			res += tmp->ch;
-			tmp = root;
+		try{
+			if (c == '0'){
+				tmp = tmp->left;
+			}else if(c == '1'){
+				tmp = tmp->right;
+			}else{
+				throw 1;
+			}
+			if(tmp->isLeaf){
+				res += tmp->ch;
+				tmp = root;
+			}
+			if(tmp == NULL){
+				throw 1;
+			}
+		}catch (int e) {
+			if (e == 1){
+				"Huffman Decode error, invalid node : " + c;
+			}
+			return "Huffman Decode error code : " + to_string(e);
 		}
 	}
 	return res;
 }
+

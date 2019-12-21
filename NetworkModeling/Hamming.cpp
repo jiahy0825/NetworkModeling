@@ -77,6 +77,9 @@ string Hamming::decode(string& str){
 		idx = idx * 2 + hamm[i] - '0';
 	}
 	//assert(idx <= n);
+	if (idx > n){
+		return "Hamming Decode error";
+	}
 	// 对idx位取反
 	str[idx] = (char)('0' + !(str[idx] - '0'));
 	string res = "";

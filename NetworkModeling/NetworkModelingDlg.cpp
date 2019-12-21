@@ -59,6 +59,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_encode(_T(""))
 	, str_decode(_T(""))
 	, str_module(_T(""))
+	, sigma(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	for (int i = 0;i < 100;i++){
@@ -76,6 +77,7 @@ void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_BINARY, str_encode);
 	DDX_Text(pDX, IDC_EDIT_ENCODE, str_decode);
 	DDX_Text(pDX, IDC_EDIT_MODULE, str_module);
+	DDX_Text(pDX, IDC_EDIT_SIGMA, sigma);
 }
 
 BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
@@ -90,6 +92,7 @@ BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_DETECT, &CNetworkModelingDlg::OnBnClickedButtonDetect)
 	ON_BN_CLICKED(IDC_BUTTON_MODULE, &CNetworkModelingDlg::OnBnClickedButtonModule)
 	ON_BN_CLICKED(IDC_BUTTON_DEMODULE, &CNetworkModelingDlg::OnBnClickedButtonDemodule)
+	ON_BN_CLICKED(IDC_BUTTON_NOISE, &CNetworkModelingDlg::OnBnClickedButtonNoise)
 END_MESSAGE_MAP()
 
 
@@ -310,8 +313,12 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 		idx += period;
 	}
 
-	str = hamming.decode(str);
-	str = huffman.decode(str);
+	string binary = hamming.decode(str);
+	if (binary != "Hamming Decode error"){
+		str = huffman.decode(binary);
+	}
+	//str = huffman.decode(str);
+	str = str + "\r\n" + binary;
 	str_decode = str.c_str();
 	
 	//显示 m_ModulateDlg 对话框
@@ -326,5 +333,35 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	m_DemodulateDlg_index++;
 
 	// 更新对话框的值
+	UpdateData(FALSE);
+}
+
+
+void CNetworkModelingDlg::OnBnClickedButtonNoise()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	
+	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
+
+	int period = 16;
+	string str = CT2A(str_module.GetBuffer());
+	vector<double> modulePoints = ook.demodulate(ook.decode(str), period);
+	modulePoints = ook.addNoise(modulePoints, sigma);
+
+	str = ook.encode(modulePoints);
+	str_module = str.c_str();
+
+		//显示 m_ModulateDlg 对话框
+	if (NULL == m_ModulateDlg[m_ModulateDlg_index]){   
+        // 创建非模态对话框
+        m_ModulateDlg[m_ModulateDlg_index] = new CModulateDlg();   
+        m_ModulateDlg[m_ModulateDlg_index]->Create(IDD_DIALOG_MODULATE, this);
+	}   
+	// 显示非模态对话框
+	m_ModulateDlg[m_ModulateDlg_index]->ShowWindow(SW_SHOW);   
+	m_ModulateDlg[m_ModulateDlg_index]->drawPicture(modulePoints, selected);
+	m_ModulateDlg_index++;
+
 	UpdateData(FALSE);
 }

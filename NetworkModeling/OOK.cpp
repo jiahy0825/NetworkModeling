@@ -6,8 +6,14 @@
 #include <cstring>
 #include <vector>
 #include <math.h>
+//#include <iostream>
+#include <iomanip>
+#include <sstream>
 
-// # define PI 3.14159265358979323846 
+#include <random>
+#include <chrono>
+
+ //# define PI 3.14159265358979323846 
 
 using namespace std;
 
@@ -35,14 +41,26 @@ string OOK::encode(vector<double>& vec){
 		res = "OOK encode vector is empty";
 		return res;
 	}
-	res += to_string(vec[0]);
+
+	stringstream stream;
+	stream << fixed << setprecision(4) << vec[0];
 	for (int i = 1;i < vec.size();i++){
-		res += "," + to_string(vec[i]);
+		stream << "," << vec[i];
 	}
+	res = stream.str();
+
+	//res += to_string( ((int)(vec[0] * 100) / 100.0) );
+	//for (int i = 1;i < vec.size();i++){
+	//	res += "," + to_string( ((int)(vec[i] * 100) / 100.0) );
+	//}
+
 	return res;
 }
 
 vector<double> OOK::decode(string& str){
+	if (str == "OOK encode vector is empty"){
+		return vector<double>();
+	}
 	vector<string> vec = split(str, ",");
 	vector<double> res;
 	for (int i = 0;i < vec.size();i++){
@@ -58,6 +76,7 @@ vector<double> OOK::modulate(string& str, int period){
 		ch = c - '0';
 		for (int i = 1;i <= period;i++){
 			res.push_back(ch * sin(2 * PI * i / period));
+			//res.push_back(ch * cos(2 * PI * i / period));
 		}
 	}
 	return res;
@@ -70,6 +89,7 @@ vector<double> OOK::demodulate(vector<double>& vec, int period){
 	while (idx < vec.size()){
 		for (int i = 1;i <= period;i++){
 			vec[idx + i - 1] = vec[idx + i - 1] * sin(2 * PI * i / period);
+			//vec[idx + i - 1] = vec[idx + i - 1] * cos(2 * PI * i / period);
 		}
 		idx += period;
 	}
@@ -88,4 +108,18 @@ vector<double> OOK::demodulate(vector<double>& vec, int period){
 
 	// 此处更新modulePoints，为画图做准备
 	return roll;
+}
+
+vector<double> OOK::addNoise(vector<double>& vec, double sigma){
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+  
+	default_random_engine generator(seed);
+	// 第一个参数为高斯分布的平均值，第二个参数为标准差
+	std::normal_distribution<double> distribution(0.0, sigma);
+
+	vector<double> res;
+	for (int i = 0; i < vec.size();i++){
+		res.push_back(vec[i] + distribution(generator));
+	}
+	return res;
 }

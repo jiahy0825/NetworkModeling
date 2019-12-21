@@ -42,6 +42,7 @@ public:
 	CString str_encode;
 	CString str_decode;
 	CString str_module;
+	double sigma;
 
 	Huffman huffman;
 	ASCIICode asciiCode;
@@ -61,4 +62,5 @@ public:
 	afx_msg void OnBnClickedButtonDetect();
 	afx_msg void OnBnClickedButtonModule();
 	afx_msg void OnBnClickedButtonDemodule();
+	afx_msg void OnBnClickedButtonNoise();
 };
