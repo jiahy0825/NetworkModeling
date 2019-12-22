@@ -39,12 +39,11 @@ string Hamming::encode(string& str){
 	int m = str.length();
 	int r = encodeLen(m);
 	int n = m + r;
-	// 首字符保留
-	string res = string(n + 1, '0');
+	string res = string(n, '0');
 	int k = 1;
 	int idx = 0;
-	for (int i = 1;i <= n;i++){
-		if (i == k){
+	for (int i = 0;i < n;i++){
+		if (i == k - 1){
 			res[i] = '0';
 			k *= 2;
 		}else{
@@ -54,21 +53,19 @@ string Hamming::encode(string& str){
 	//assert(idx == m && k == (int)pow(2, r));
 	k = 1;
 	for (int i = 0;i < r;i++){
-		res[k] = (char)('0' + help(res, k, k));
+		res[k - 1] = (char)('0' + help(res, k - 1, k));
 		k *= 2;
 	}
 	return res;
 }
 
 string Hamming::decode(string& str){
-	// n中包括保留的首字符
 	int n = str.length();
-	n--;
 	int r = decodeLen(n);
 	int k = 1;
 	string hamm = "";
 	for (int i = 0;i < r;i++){
-		hamm += (char)('0' + help(str, k, k));
+		hamm += (char)('0' + help(str, k - 1, k));
 		k *= 2;
 	}
 	reverse(hamm.begin(), hamm.end());
@@ -81,11 +78,13 @@ string Hamming::decode(string& str){
 		return "Hamming Decode error";
 	}
 	// 对idx位取反
-	str[idx] = (char)('0' + !(str[idx] - '0'));
+	if (idx > 0){
+		str[idx - 1] = (char)('0' + !(str[idx - 1] - '0'));
+	}
 	string res = "";
 	k = 1;
-	for (int i = 1;i <= n;i++){
-		if (i == k){
+	for (int i = 0;i < n;i++){
+		if (i == k - 1){
 			k *= 2;
 		}else{
 			res += str[i];
