@@ -83,7 +83,7 @@ void CModulateDlg::drawPicture(std::vector<double>& vec, bool dynamic){
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::LeftAxis);
 	pAxis->SetAutomatic(true);
 
-	WriteLog(CString("success"), CString("Print"));
+	//WriteLog(CString("success"), CString("Print"));
 
 	// 导入标题
 	TChartString str1;

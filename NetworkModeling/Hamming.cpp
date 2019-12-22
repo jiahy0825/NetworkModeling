@@ -59,6 +59,20 @@ string Hamming::encode(string& str){
 	return res;
 }
 
+
+string Hamming::encode74(string& str){
+	string res = "";
+	string tmp;
+	int idx = 0;
+	while (idx < str.length()){
+		tmp = str.substr(idx, 4);
+		res += encode(tmp);
+		idx += 4;
+	}
+	return res;
+}
+
+
 string Hamming::decode(string& str){
 	int n = str.length();
 	int r = decodeLen(n);
@@ -89,6 +103,23 @@ string Hamming::decode(string& str){
 		}else{
 			res += str[i];
 		}
+	}
+	return res;
+}
+
+
+string Hamming::decode74(string& str){
+	string res = "";
+	string tmp;
+	int idx = 0;
+	while (idx < str.length()){
+		tmp = str.substr(idx, 7);
+		tmp = decode(tmp);
+		if (tmp == "Hamming Decode error"){
+			return tmp;
+		}
+		res += tmp;
+		idx += 7;
 	}
 	return res;
 }

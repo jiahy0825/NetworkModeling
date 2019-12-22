@@ -61,6 +61,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_module(_T(""))
 	, sigma(0)
 	, str_output(_T(""))
+	, m_period(16)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	for (int i = 0;i < 100;i++){
@@ -80,6 +81,8 @@ void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_MODULE, str_module);
 	DDX_Text(pDX, IDC_EDIT_SIGMA, sigma);
 	DDX_Text(pDX, IDC_EDIT_OUTPUT, str_output);
+	DDX_Text(pDX, IDC_EDIT2, m_period);
+	DDV_MinMaxInt(pDX, m_period, 4, 128);
 }
 
 BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
@@ -247,7 +250,7 @@ void CNetworkModelingDlg::OnBnClickedButtonCorrect()
 	UpdateData(TRUE);
 	string str = CT2A(str_input.GetBuffer());
 	str = huffman.encode(str);
-	str = hamming.encode(str);
+	str = hamming.encode74(str);
 	str_encode = str.c_str();
 
 	// 更新对话框的值
@@ -265,7 +268,7 @@ void CNetworkModelingDlg::OnBnClickedButtonDetect()
 		str = CT2A(str_encode.GetBuffer());
 	}
 	
-	str = hamming.decode(str);
+	str = hamming.decode74(str);
 	if (str != "Hamming Decode error"){
 		str = huffman.decode(str);
 	}
@@ -283,10 +286,10 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 
 	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
 
-	int period = 16;
+	//int period = 16;
 	string str = CT2A(str_encode.GetBuffer());
 
-	vector<double> modulePoints = ook.modulate(str, period);
+	vector<double> modulePoints = ook.modulate(str, m_period);
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
@@ -313,10 +316,10 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 
 	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
 
-	int period = 16;
-	int idx = period / 2;
+	//int period = 16;
+	int idx = m_period / 2;
 	string str = CT2A(str_module.GetBuffer());
-	vector<double> modulePoints = ook.demodulate(ook.decode(str), period);
+	vector<double> modulePoints = ook.demodulate(ook.decode(str), m_period);
 
 	str = "";
 	while (idx < modulePoints.size()){
@@ -325,7 +328,7 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 		}else{
 			str += "0";
 		}
-		idx += period;
+		idx += m_period;
 	}
 
 	str_decode = str.c_str();

@@ -16,4 +16,6 @@ public:
 	int decodeLen(int n);
 	string encode(string& str);
 	string decode(string& str);
+	string encode74(string& str);
+	string decode74(string& str);
 };

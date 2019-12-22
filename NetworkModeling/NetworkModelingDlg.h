@@ -45,6 +45,7 @@ public:
 	CString str_output;
 	
 	double sigma;
+	int m_period;
 
 	Huffman huffman;
 	ASCIICode asciiCode;
