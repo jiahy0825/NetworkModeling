@@ -316,9 +316,12 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 	string binary = hamming.decode(str);
 	if (binary != "Hamming Decode error"){
 		str = huffman.decode(binary);
+		str = str + "\r\n" + binary;
+	}else{
+		str = binary + "\r\n" + str;
 	}
 	//str = huffman.decode(str);
-	str = str + "\r\n" + binary;
+	//str = str + "\r\n" + binary;
 	str_decode = str.c_str();
 	
 	//œ‘ æ m_ModulateDlg ∂‘ª∞øÚ
@@ -346,9 +349,10 @@ void CNetworkModelingDlg::OnBnClickedButtonNoise()
 
 	int period = 16;
 	string str = CT2A(str_module.GetBuffer());
-	vector<double> modulePoints = ook.demodulate(ook.decode(str), period);
+	vector<double> modulePoints = ook.decode(str);
 	modulePoints = ook.addNoise(modulePoints, sigma);
-
+	//vector<double> modulePoints = ook.demodulate(modulePoints, period);
+	
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
