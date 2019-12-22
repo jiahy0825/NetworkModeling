@@ -111,7 +111,8 @@ vector<double> OOK::demodulate(vector<double>& vec, int period){
 }
 
 vector<double> OOK::addNoise(vector<double>& vec, double sigma){
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	//unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	unsigned seed = 1222;
   
 	default_random_engine generator(seed);
 	// 第一个参数为高斯分布的平均值，第二个参数为标准差

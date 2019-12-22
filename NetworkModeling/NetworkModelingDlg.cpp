@@ -81,7 +81,7 @@ void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_MODULE, str_module);
 	DDX_Text(pDX, IDC_EDIT_SIGMA, sigma);
 	DDX_Text(pDX, IDC_EDIT_OUTPUT, str_output);
-	DDX_Text(pDX, IDC_EDIT2, m_period);
+	DDX_Text(pDX, IDC_EDIT_PERIOD, m_period);
 	DDV_MinMaxInt(pDX, m_period, 4, 128);
 }
 

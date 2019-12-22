@@ -82,6 +82,7 @@ void CModulateDlg::drawPicture(std::vector<double>& vec, bool dynamic){
 	pAxis->SetAutomatic(true);
 	pAxis = m_ChartCtrl_Modulate.CreateStandardAxis(CChartCtrl::LeftAxis);
 	pAxis->SetAutomatic(true);
+	//pAxis->SetMinMax(-1, 1);
 
 	//WriteLog(CString("success"), CString("Print"));
 
