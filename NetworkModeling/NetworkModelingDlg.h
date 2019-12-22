@@ -40,8 +40,10 @@ protected:
 public:
 	CString str_input;
 	CString str_encode;
-	CString str_decode;
 	CString str_module;
+	CString str_decode;
+	CString str_output;
+	
 	double sigma;
 
 	Huffman huffman;

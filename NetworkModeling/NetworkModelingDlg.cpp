@@ -60,6 +60,7 @@ CNetworkModelingDlg::CNetworkModelingDlg(CWnd* pParent /*=NULL*/)
 	, str_decode(_T(""))
 	, str_module(_T(""))
 	, sigma(0)
+	, str_output(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	for (int i = 0;i < 100;i++){
@@ -78,6 +79,7 @@ void CNetworkModelingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_ENCODE, str_decode);
 	DDX_Text(pDX, IDC_EDIT_MODULE, str_module);
 	DDX_Text(pDX, IDC_EDIT_SIGMA, sigma);
+	DDX_Text(pDX, IDC_EDIT_OUTPUT, str_output);
 }
 
 BEGIN_MESSAGE_MAP(CNetworkModelingDlg, CDialogEx)
@@ -199,8 +201,12 @@ void CNetworkModelingDlg::OnBnClickedButtonDecode()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	string str = CT2A(str_encode.GetBuffer());
-	str_decode = huffman.decode(str).c_str();
+
+	string str = CT2A(str_decode.GetBuffer());
+	if (str.length() == 0){
+		str = CT2A(str_encode.GetBuffer());
+	}
+	str_output = huffman.decode(str).c_str();
 
 	// 更新对话框的值
 	UpdateData(FALSE);
@@ -223,14 +229,18 @@ void CNetworkModelingDlg::OnBnClickedButtonAsciiDecode()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	string str = CT2A(str_encode.GetBuffer());
-	str_decode = asciiCode.decode(str).c_str();
 
+	string str = CT2A(str_decode.GetBuffer());
+	if (str.length() == 0){
+		str = CT2A(str_encode.GetBuffer());
+	}
+	str_output = asciiCode.decode(str).c_str();
+	
 	// 更新对话框的值
 	UpdateData(FALSE);
 }
 
-// 011011011010有误
+
 void CNetworkModelingDlg::OnBnClickedButtonCorrect()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -249,10 +259,17 @@ void CNetworkModelingDlg::OnBnClickedButtonDetect()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	UpdateData(TRUE);
-	string str = CT2A(str_encode.GetBuffer());
+
+	string str = CT2A(str_decode.GetBuffer());
+	if (str.length() == 0){
+		str = CT2A(str_encode.GetBuffer());
+	}
+	
 	str = hamming.decode(str);
-	str = huffman.decode(str);
-	str_decode = str.c_str();
+	if (str != "Hamming Decode error"){
+		str = huffman.decode(str);
+	}
+	str_output = str.c_str();
 
 	// 更新对话框的值
 	UpdateData(FALSE);
@@ -266,12 +283,10 @@ void CNetworkModelingDlg::OnBnClickedButtonModule()
 
 	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
 
-	string str = CT2A(str_input.GetBuffer());
-	str = huffman.encode(str);
-	str = hamming.encode(str);
-	str_encode = str.c_str();
+	int period = 16;
+	string str = CT2A(str_encode.GetBuffer());
 
-	vector<double> modulePoints = ook.modulate(str, 16);
+	vector<double> modulePoints = ook.modulate(str, period);
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
@@ -313,15 +328,6 @@ void CNetworkModelingDlg::OnBnClickedButtonDemodule()
 		idx += period;
 	}
 
-	string binary = hamming.decode(str);
-	if (binary != "Hamming Decode error"){
-		str = huffman.decode(binary);
-		str = str + "\r\n" + binary;
-	}else{
-		str = binary + "\r\n" + str;
-	}
-	//str = huffman.decode(str);
-	//str = str + "\r\n" + binary;
 	str_decode = str.c_str();
 	
 	//显示 m_ModulateDlg 对话框
@@ -351,12 +357,11 @@ void CNetworkModelingDlg::OnBnClickedButtonNoise()
 	string str = CT2A(str_module.GetBuffer());
 	vector<double> modulePoints = ook.decode(str);
 	modulePoints = ook.addNoise(modulePoints, sigma);
-	//vector<double> modulePoints = ook.demodulate(modulePoints, period);
 	
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
 
-		//显示 m_ModulateDlg 对话框
+	//显示 m_ModulateDlg 对话框
 	if (NULL == m_ModulateDlg[m_ModulateDlg_index]){   
         // 创建非模态对话框
         m_ModulateDlg[m_ModulateDlg_index] = new CModulateDlg();   

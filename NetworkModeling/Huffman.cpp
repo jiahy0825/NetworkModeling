@@ -99,7 +99,7 @@ string Huffman::decode(string& str){
 			}
 		}catch (int e) {
 			if (e == 1){
-				"Huffman Decode error, invalid node : " + c;
+				return "Huffman Decode error, invalid node : " + c;
 			}
 			return "Huffman Decode error code : " + to_string(e);
 		}
