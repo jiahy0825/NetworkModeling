@@ -97,7 +97,7 @@ string Huffman::decode(string& str){
 			if(tmp == NULL){
 				throw 1;
 			}
-		}catch (int e) {
+		}catch (int e){
 			if (e == 1){
 				return "Huffman Decode error, invalid node : " + c;
 			}
