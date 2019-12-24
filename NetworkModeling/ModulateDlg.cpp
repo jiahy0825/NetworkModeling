@@ -119,9 +119,9 @@ void CModulateDlg::drawPicture(std::vector<double>& vec, bool dynamic){
 	m_ChartCtrl_Modulate.SetZoomEnabled(true);
 	m_ChartCtrl_Modulate.RemoveAllSeries();//先清空
 	pLineSerie = m_ChartCtrl_Modulate.CreateLineSerie();
-	//pLineSerie2 = m_ChartCtrl_Modulate.CreatePointsSerie();
+	//pLineSerie = m_ChartCtrl_Modulate.CreatePointsSerie();
 	pLineSerie->SetSeriesOrdering(poNoOrdering);//设置为无序
-	//pLineSerie2->SetPoints(X1Values, Y1Values, vec.size());
+	//pLineSerie->SetPoints(X1Values, Y1Values, vec.size());
 	pLineSerie->AddPoints(X1Values, Y1Values, size);
 
 	// 设置鼠标监听事件

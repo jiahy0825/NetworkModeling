@@ -356,10 +356,12 @@ void CNetworkModelingDlg::OnBnClickedButtonNoise()
 	
 	bool selected = IsDlgButtonChecked(IDC_CHECK_SLIDE);
 
-	int period = 16;
 	string str = CT2A(str_module.GetBuffer());
 	vector<double> modulePoints = ook.decode(str);
-	modulePoints = ook.addNoise(modulePoints, sigma);
+
+	if (abs(sigma) >= 1e-5){
+		modulePoints = ook.addNoise(modulePoints, sigma);
+	}
 	
 	str = ook.encode(modulePoints);
 	str_module = str.c_str();
