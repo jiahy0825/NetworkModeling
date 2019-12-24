@@ -194,6 +194,8 @@ void CNetworkModelingDlg::OnBnClickedButtonEncode()
 	UpdateData(TRUE);
 	string str = CT2A(str_input.GetBuffer());
 	str_encode = huffman.encode(str).c_str();
+	//str_encode += "\r\n";
+	//str_encode += to_string(huffman.averageCodeLength).c_str();
 
 	// 更新对话框的值
 	UpdateData(FALSE);

@@ -26,6 +26,14 @@ void Huffman::initTree(string& str){
 		tmp->isLeaf = true;
 		q.push(*tmp);
 	}
+	if (q.size() == 1){
+		node left = q.top();
+		q.pop();
+		root = new node();
+		root->freq = left.freq;
+		root->left = new node(left); //&left;
+		return;
+	}
 	while (q.size() > 1){
 		node left = q.top();
 		q.pop();
